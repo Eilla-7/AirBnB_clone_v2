@@ -126,9 +126,10 @@ class HBNBCommand(cmd.Cmd):
                 raise NameError()
 
             arg_dict = {}
-            for ar in arguments[1:]:
-                key, value = ar.split("=")
-                value = value.strip('"')
+            for ar in range(1, len(arguments)):
+                key, value = tuple(arguments[ar].split("="))
+                if value[0] == '"':
+                    value = value.strip('"').replace("_", " ")
                 arg_dict[key] = value
 
             new_instance = eval(class_name)(**arg_dict)
