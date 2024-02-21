@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
 
             if class_name not in self.classes:
                 raise NameError()
-        
+
             arg_dict = {}
             for ar in arguments[1:]:
                 key, value = ar.split("=")
@@ -335,6 +335,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
