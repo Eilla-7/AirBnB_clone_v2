@@ -123,7 +123,6 @@ class HBNBCommand(cmd.Cmd):
             class_name = arguments[0]
 
             if class_name not in self.classes:
-                print("hi")
                 raise NameError()
         
             arg_dict = {}
@@ -223,12 +222,14 @@ class HBNBCommand(cmd.Cmd):
                 return
             for k, v in storage._FileStorage__objects.items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print_list.append(v)
         else:
             for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+                print_list.append(v)
+        print("[", end="")
+        for obj in print_list:
+            print(obj, end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
