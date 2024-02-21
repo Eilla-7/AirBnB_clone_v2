@@ -47,11 +47,14 @@ class FileStorage:
                     'Review': Review
                   }
         try:
-            temp = {}
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
+                for key, value in temp.items():
+                    class_name = value["__class__"]
+                    obj_class = classes.get(class_name)
+                    if obj_class:
+                        obj = obj_class(**value)
+                        self.__objects[key] = obj
         except FileNotFoundError:
             pass
 
@@ -59,5 +62,5 @@ class FileStorage:
         """Deletes an object from __objects if it exists"""
         if obj is not None:
             key = obj.__class__.__name__ + '.' + obj.id
-            if key in FileStorage.__objects:
-                del FileStorage.__objects[key]
+            if key in self.__objects:
+                del self.__objects[key]
