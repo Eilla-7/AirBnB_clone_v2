@@ -8,12 +8,7 @@ from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import String
 
-
-if models.storage_t == "db":
-    Base = declarative_base()
-else:
-    Base = object
-# Base = declarative_base()
+Base = declarative_base()
 
 
 class BaseModel:
@@ -67,7 +62,3 @@ class BaseModel:
         #dictionary.pop('_sa_instance_state', None)
 
         return dictionary
-    
-    def delete(self):
-        """delete the current instance from the storage"""
-        models.storage.delete(self)
