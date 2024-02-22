@@ -8,15 +8,21 @@ from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import String
 
-Base = declarative_base()
+
+if models.storage_t == "db":
+    Base = declarative_base()
+else:
+    Base = object
+# Base = declarative_base()
 
 
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    if models.storage_t == "db":
+        id = Column(String(60), primary_key=True, nullable=False)
+        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -45,6 +51,16 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
+        new_dict = self.__dict__.copy()
+        if "created_at" in new_dict:
+            new_dict["created_at"] = new_dict["created_at"].strftime(time)
+        if "updated_at" in new_dict:
+            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
+        new_dict["__class__"] = self.__class__.__name__
+        if "_sa_instance_state" in new_dict:
+            del new_dict["_sa_instance_state"]
+        return new_dict
+
         #dictionary = {}
         #dictionary.update(self.__dict__)
         #class_nam = (str(type(self)).split('.')[-1]).split('\'')[0]
@@ -52,13 +68,19 @@ class BaseModel:
         #dictionary['created_at'] = self.created_at.isoformat()
         #dictionary['updated_at'] = self.updated_at.isoformat()
 
-        dictionary = self.__dict__.copy()
-        dictionary["__class__"] = str(type(self).__class__.__name__)
-        dictionary["created_at"] = self.created_at.isoformat()
-        dictionary["updated_at"] = self.updated_at.isoformat()
+        # dictionary = self.__dict__.copy()
+        # dictionary["__class__"] = str(type(self).__class__.__name__)
+        # dictionary["created_at"] = self.created_at.isoformat()
+        # dictionary["updated_at"] = self.updated_at.isoformat()
 
-        if '_sa_instance_state' in dictionary:
-            del dictionary['_sa_instance_state']
+        # if '_sa_instance_state' in dictionary:
+        #     del dictionary['_sa_instance_state']
+
+
         #dictionary.pop('_sa_instance_state', None)
 
-        return dictionary
+        # return dictionary
+    
+    def delete(self):
+        """delete the current instance from the storage"""
+        models.storage.delete(self)
