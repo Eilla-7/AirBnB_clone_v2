@@ -16,17 +16,13 @@ class State(BaseModel):
         cities = relationship("City", backref="state", cascade="delete")
     else:
         name = ""
-    
-    def __init__(self, *args, **kwargs):
-        """initializes state"""
-        super().__init__(*args, **kwargs)
-    
-    if models.storage_t != "db":
-        @property
-        def cities(self):
-            """ return the list of city inctance"""
-            cities_list = []
-            for city in models.storage.all("City").values():
-                if city.state_id == self.id:
-                    cities_list.append(city)
-            return(cities_list)
+
+    @property
+    def cities(self):
+        """ return the list of city inctance"""
+
+        cities_list = []
+        for city in models.storage.all("City").values():
+            if city.state_id == self.id:
+                cities_list.append(city)
+        return(cities_list)
