@@ -21,7 +21,7 @@ class DBStorage:
 
     def __init__(self):
         """ initalize a new datastorage"""
-        self.engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
                                     format(getenv("HBNB_MYSQL_USER"),
                                             getenv("HBNB_MYSQL_PWD"),
                                             getenv("HBNB_MYSQL_HOST"),
@@ -35,15 +35,15 @@ class DBStorage:
         
         if cls is None:
             my_obj = self.__session.query(State).all()
-            my_obj.extend(self.__sesion.query(City).all())
-            my_obj.extend(self.__sesion.query(User).all())
-            my_obj.extend(self.__sesion.query(Place).all())
-            my_obj.extend(self.__sesion.query(Review).all())
-            my_obj.extend(self.__sesion.query(Amenity).all())
+            my_obj.extend(self.__session.query(City).all())
+            my_obj.extend(self.__session.query(User).all())
+            my_obj.extend(self.__session.query(Place).all())
+            my_obj.extend(self.__session.query(Review).all())
+            my_obj.extend(self.__session.query(Amenity).all())
         else:
-            if type(cls) == str:
+            if isinstance(cls, str):
                 cls = eval(cls)
-            my_obj = self.__session.query(cls)
+            my_obj = self.__session.query(cls).all()
         return {"{}.{}".format(type(o).__name__, o.id): o for o in my_obj }
 
     def new(self, obj):
