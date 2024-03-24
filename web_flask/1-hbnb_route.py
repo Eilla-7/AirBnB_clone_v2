@@ -11,6 +11,7 @@ def hello_HBNB():
     """ function to diplay hello HBNB"""
     return 'Hello HBNB!'
 
+
 @app.route('/hbnb', strict_slashes=False)
 def fun_HBNB():
     """ function to diplay HBNB"""
