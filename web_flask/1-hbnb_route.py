@@ -13,7 +13,7 @@ def hello_hbnb():
 
 
 @app.route('/hbnb', strict_slashes=False)
-def fun_hbnb():
+def show_hbnb():
     """ function to diplay HBNB"""
     return 'HBNB'
 
