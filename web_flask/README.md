@@ -1,1 +1,1 @@
-this is a flask directory
+This directory for flask frameworks tasks
